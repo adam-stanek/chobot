@@ -1,0 +1,11 @@
+{
+  "name": "@dobby/router",
+  "version": "0.1.0",
+  "description": "URL router for Dobby projects",
+  "license": "UNLICENSED",
+  "author": "V3Net.cz, s.r.o. <info@v3net.cz> (http://www.v3net.cz)",
+  "dependencies": {
+    "@dobby/fluent": "^0.1.0",
+    "deep-equal": "^1.0.1"
+  }
+}
