@@ -55,11 +55,14 @@ function match(str, matchingTree, paramTypes = {}, strIndex = 0, treeIndex = 0, 
     }
   }
 
-  matches.push({
-    matchedLength: strIndex,
-    rank,
-    params
-  });
+  // Only accept if we matched whole dirname and not just part of it
+  if(strIndex === 0 || strIndex === str.length || str[strIndex] === '/') {
+    matches.push({
+      matchedLength: strIndex,
+      rank,
+      params
+    });
+  }
 
   return matches;
 }
