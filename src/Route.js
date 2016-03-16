@@ -2,6 +2,7 @@
 
 const parsePathExpression = require('./utils/parsePathExpression.js');
 const match = require('./utils/match.js');
+const ensureRoute = require('./utils/ensureRoute.js');
 const { composeChain } = require('@dobby/fluent');
 const { ParamType } = require('./ParamType.js');
 
@@ -61,7 +62,7 @@ class Route {
     for(var k in props)
       this[k] = props[k];
 
-    this.children = children;
+    this.children = children.map((child) => ensureRoute(child, Route));
 
     // Parse 'path' expression into matching tree
     this.matchingTree = props.path == undefined || props.path == '' || props.path == '.' ? null : parsePathExpression(props.path);
