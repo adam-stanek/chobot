@@ -15,6 +15,7 @@
     "chai": "^3.5.0"
   },
   "scripts": {
+    "test": "mocha --harmony_rest_parameters --harmony_destructuring --harmony_default_parameters --recursive ./tests",
     "examples": "mocha --harmony_rest_parameters --harmony_destructuring --harmony_default_parameters --require ./examples/_bootstrap.js ./examples || true"
   }
 }
