@@ -2,18 +2,20 @@
 const { DEFAULT_FILTER } = require('../ParamType.js');
 
 // Matcher
-function match(str, matchingTree, paramTypes = {}, strIndex = 0, treeIndex = 0) {
+function match(str, matchingTree, paramTypes = {}, strIndex = 0, treeIndex = 0, rank = 0) {
   var params = {};
+  var matches = [];
 
   for(var i = treeIndex; i < matchingTree.length; i++) {
     // Fixed string
     if(matchingTree[i].s) {
       // If string starts at the index we move the index by substring length
       // If not we are in the dead end.
-      if(str.lastIndexOf(matchingTree[i].s, strIndex) == strIndex)
+      if(str.lastIndexOf(matchingTree[i].s, strIndex) == strIndex) {
         strIndex += matchingTree[i].s.length;
-      else
-        return false;
+        rank++;
+      } else
+        return matches;
     }
 
     // Parameter
@@ -27,32 +29,39 @@ function match(str, matchingTree, paramTypes = {}, strIndex = 0, treeIndex = 0) 
       if(f) {
         params[matchingTree[i].p] = f.value;
         strIndex += f.matchedString.length;
+        rank++;
       } else
-        return false;
+        return matches;
     }
 
     // Optional fragment
     else if(matchingTree[i].o) {
       // Try to match the optional subtree
-      let m = match(str, matchingTree[i].o, paramTypes, strIndex, 0);
-      if(m) {
-        let params2 = Object.assign({}, params, m.params);
+      let m = match(str, matchingTree[i].o, paramTypes, strIndex, 0, rank);
 
-        // If we have match we check if we can continue with the rest.
-        // If we can, we have a match.
-        m = match(str, matchingTree, paramTypes, m.index, i + 1);
-        if(m) {
-          for(let k in m.params)
-            params2[k] = m.params[k];
+      // For each subtree match check if we can continue with it
+      for(var j = 0; j < m.length; j++) {
+        let params2 = Object.assign({}, params, m[j].params);
 
-          m.params = params2;
-          return m;
+        let m2 = match(str, matchingTree, paramTypes, m[j].matchedLength, i + 1, m[j].rank);
+        for(var k = 0; k < m2.length; k++) {
+          matches.push({
+            matchedLength: m2[k].matchedLength,
+            rank: m2[k].rank,
+            params: Object.assign({}, params2, m2[k].params)
+          });
         }
       }
     }
   }
 
-  return { index: strIndex, params };
+  matches.push({
+    matchedLength: strIndex,
+    rank,
+    params
+  });
+
+  return matches;
 }
 
 module.exports = match;
