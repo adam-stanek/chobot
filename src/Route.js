@@ -62,7 +62,7 @@ class Route {
     for(var k in props)
       this[k] = props[k];
 
-    this.children = children.map((child) => ensureRoute(child, Route));
+    this.children = children.map((child) => ensureRoute(Route, child));
 
     // Parse 'path' expression into matching tree
     this.matchingTree = props.path == undefined || props.path == '' || props.path == '.' ? null : parsePathExpression(props.path);
@@ -141,7 +141,7 @@ class Route {
     // If we got here it means that we skipped path matching of this route
     // => continue to children routes.
     if(this.children) {
-    let childMatches = matchRouteList(this.children, location, index);
+      let childMatches = matchRouteList(this.children, location, index);
       if(childMatches) {
         merge(result.params, childMatches.params);
         applyDefaults(result.params, this.defaults);

@@ -11,7 +11,7 @@ const REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symb
  * @return {Route}
  * @throws Will throw an error if argument cannot be converted into Route.
  */
-function ensureRoute(obj, Route) {
+function ensureRoute(Route, obj) {
   if(obj instanceof Route)
     return obj;
 

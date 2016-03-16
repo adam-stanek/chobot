@@ -1,5 +1,8 @@
+var Route = require('./src/Route.js');
+
 module.exports = {
   Router: require('./src/Router.js'),
-  Route: require('./src/Route.js'),
-  ParamTypes: require('./src/param-types/index.js')
+  Route: Route,
+  ParamTypes: require('./src/param-types/index.js'),
+  ensureRoute: require('./src/utils/ensureRoute.js').bind(null, Route)
 };

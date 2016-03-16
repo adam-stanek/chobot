@@ -7,5 +7,14 @@
   "dependencies": {
     "@dobby/fluent": "^0.1.0",
     "deep-equal": "^1.0.1"
+  },
+  "devDependencies": {
+    "@dobby/babel-register": "^0.1.0",
+    "babel-core": "^6.7.2",
+    "babel-plugin-transform-react-jsx": "^6.5.2",
+    "chai": "^3.5.0"
+  },
+  "scripts": {
+    "examples": "mocha --harmony_rest_parameters --harmony_destructuring --harmony_default_parameters --require ./examples/_bootstrap.js ./examples || true"
   }
 }
