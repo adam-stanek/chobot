@@ -11,7 +11,7 @@ function isOptionalForParams(matchingNode, params, paramTypes) {
 
   if(matchingNode.p) {
     var defaultValue = paramTypes[matchingNode.p] ? paramTypes[matchingNode.p].defaultValue : undefined;
-    return params[matchingNode.p] == defaultValue;
+    return params[matchingNode.p] === undefined || params[matchingNode.p] === defaultValue;
   }
 
   if(matchingNode.o) {
