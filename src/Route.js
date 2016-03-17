@@ -60,7 +60,8 @@ class Route {
     // TODO: add support for directly passed types
     if(this.params) {
       for(var k in this.params) {
-        this.params[k] = composeChain(new ParamType, this.params[k].__chain);
+        if(!(this.params[k] instanceof ParamType))
+          this.params[k] = composeChain(new ParamType, this.params[k].__chain);
       }
     } else {
       this.params = {};
