@@ -12,10 +12,12 @@
     "@dobby/babel-register": "^0.1.0",
     "babel-core": "^6.7.2",
     "babel-plugin-transform-react-jsx": "^6.5.2",
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "istanbul": "^1.0.0-alpha.2"
   },
   "scripts": {
     "test": "mocha --harmony_rest_parameters --harmony_destructuring --harmony_default_parameters --recursive ./tests",
-    "examples": "mocha --harmony_rest_parameters --harmony_destructuring --harmony_default_parameters --require ./examples/_bootstrap.js ./examples || true"
+    "examples": "mocha --harmony_rest_parameters --harmony_destructuring --harmony_default_parameters --require ./examples/_bootstrap.js ./examples || true",
+    "coverage": "node --harmony_rest_parameters --harmony_destructuring --harmony_default_parameters ./node_modules/istanbul/lib/cli.js cover _mocha -- --require ./examples/_bootstrap.js --recursive ./examples ./tests || true"
   }
 }
