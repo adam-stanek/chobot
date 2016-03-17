@@ -122,7 +122,7 @@ class Route {
         // Leaf route
         else {
           // If we are at the end of the path and we are leaf route => END
-          if(m[i].matchedLength + index === location.pathname.length) {
+          if(m[i].matchedLength + index === location.pathname.length || (location.pathname.length == m[i].matchedLength + index + 1 && location.pathname[m[i].matchedLength + index] == '/')) {
             Object.assign(result.params, m[i].params);
             assignDefaults(result.params, this.params);
             return result;
