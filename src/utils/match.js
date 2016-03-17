@@ -5,6 +5,7 @@ const { DEFAULT_FILTER } = require('../ParamType.js');
 function match(str, matchingTree, paramTypes = {}, strIndex = 0, treeIndex = 0, rank = 0) {
   var params = {};
   var matches = [];
+  var initialStrIndex = strIndex;
 
   for(var i = treeIndex; i < matchingTree.length; i++) {
     // Fixed string
@@ -43,10 +44,10 @@ function match(str, matchingTree, paramTypes = {}, strIndex = 0, treeIndex = 0, 
       for(var j = 0; j < m.length; j++) {
         let params2 = Object.assign({}, params, m[j].params);
 
-        let m2 = match(str, matchingTree, paramTypes, m[j].matchedLength, i + 1, m[j].rank);
+        let m2 = match(str, matchingTree, paramTypes, strIndex + m[j].matchedLength, i + 1, m[j].rank);
         for(var k = 0; k < m2.length; k++) {
           matches.push({
-            matchedLength: m2[k].matchedLength,
+            matchedLength: m2[k].matchedLength + m[j].matchedLength + strIndex - initialStrIndex,
             rank: m2[k].rank,
             params: Object.assign({}, params2, m2[k].params)
           });
@@ -55,10 +56,10 @@ function match(str, matchingTree, paramTypes = {}, strIndex = 0, treeIndex = 0, 
     }
   }
 
-  // Only accept if we matched whole dirname and not just part of it
-  if(strIndex === 0 || strIndex === str.length || str[strIndex] === '/') {
+  // Only accept if we matched the whole dirname and not just part of it
+  if(strIndex === initialStrIndex || strIndex === str.length || str[strIndex] === '/' || str[strIndex - 1] === '/' ) {
     matches.push({
-      matchedLength: strIndex,
+      matchedLength: strIndex - initialStrIndex,
       rank,
       params
     });

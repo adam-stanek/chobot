@@ -20,24 +20,6 @@ function matchRouteList(routes, location, index) {
   return false;
 }
 
-function merge(params, ...otherParams) {
-  otherParams.forEach((p) => {
-    if(p) {
-      for(let k in p)
-        params[k] = p[k];
-    }
-  })
-}
-
-function applyDefaults(params, defaults) {
-  if(defaults) {
-    for(let k in defaults) {
-      if(params[k] === undefined)
-        params[k] = defaults[k];
-    }
-  }
-}
-
 /**
  * Matched route info.
  * @typedef {Object} MatchedRouteInfo
@@ -65,7 +47,8 @@ class Route {
     this.children = children.map((child) => ensureRoute(Route, child));
 
     // Parse 'path' expression into matching tree
-    this.matchingTree = props.path == undefined || props.path == '' || props.path == '.' ? null : parsePathExpression(props.path);
+    if(props.path != '.')
+      this.matchingTree = props.path == undefined || props.path == '' ? [] : parsePathExpression(props.path);
 
     // TODO: add support for directly passed types
     if(this.params) {
@@ -96,58 +79,47 @@ class Route {
       routes: [ this ]
     };
 
-    // Match against matching tree
-    if(this.matchingTree) {
-      let m = match(location.pathname, this.matchingTree, this.params, index);
-      if(m) {
-        // If we are at the end of the path and we have are leaf route => END
-        if(m.index == location.pathname.length && this.children.length === 0) {
-          merge(result.params, m.params);
-          applyDefaults(result.params, this.defaults);
-          return result;
-        }
-
-        // Match children routes if we have any.
-        // If we have match we simply return it. If we doesn't we try to continue
-        // without matched path expression.
-        if(this.children) {
-          let childMatches = matchRouteList(this.children, location, m.index);
-          if(childMatches) {
-            merge(result.params, m.params, childMatches.params);
-            applyDefaults(result.params, this.defaults);
-            result.routes.push(...childMatches.routes);
-            return result;
-          }
-        }
-      }
-
-      // If we are here, it means that location didn't pass the matching tree.
-      // If any of the path expression is required, we are done, otherwise
-      // we continue skipping this route path expression completely.
-      if(!this.isOptional)
-        return false;
-    }
-
-    // Match index routes
-    else if(this.path == '.') {
+    // If we are the index route
+    if(this.path === '.') {
       if(location.pathname.length == index || (location.pathname.length == index + 1 && location.pathname[index] == '/')) {
-        applyDefaults(result.params, this.defaults);
         return result;
       } else {
         return false;
       }
     }
 
-    // If we got here it means that we skipped path matching of this route
-    // => continue to children routes.
-    if(this.children) {
-      let childMatches = matchRouteList(this.children, location, index);
-      if(childMatches) {
-        merge(result.params, childMatches.params);
-        applyDefaults(result.params, this.defaults);
-        result.routes.push(...childMatches.routes);
-      } else if(index != location.pathname.length)
+    // Match against matching tree
+    else {
+      let m = match(location.pathname, this.matchingTree, this.params, index);
+      // console.log('matching', location.pathname.substring(index), 'against', this.path, ' => ', m);
+
+      if(m.length == 0)
         return false;
+
+      // Match from the worst rank
+      // (we prefer matched child routes over optional fragments)
+      for(var i = m.length - 1; i >= 0; i--) {
+
+        // Process child routes
+        if(this.children.length) {
+          let childMatches = matchRouteList(this.children, location, m[i].matchedLength + index);
+          if(childMatches) {
+            Object.assign(result.params, m[i].params, childMatches.params);
+            result.routes.push(...childMatches.routes);
+            return result;
+          }
+        }
+
+        // Leaf route
+        else {
+          // If we are at the end of the path and we are leaf route => END
+          if(m[i].matchedLength + index === location.pathname.length) {
+
+            Object.assign(result.params, m[i].params);
+            return result;
+          }
+        }
+      }
     }
 
     return result;

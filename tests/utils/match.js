@@ -4,8 +4,15 @@ const match = require('../../src/utils/match.js');
 
 describe('utils/match()', function () {
   describe('empty pattern', function () {
-    it('matches everything with 0 length', function () {
+    it('matches "foo" with 0 length', function () {
       var m = match('foo', []);
+      expect(m).to.be.deep.equal([
+        { matchedLength: 0, rank: 0, params: {} }
+      ]);
+    });
+
+    it('matches "foo/bar" starting from index 4', function () {
+      var m = match('foo/bar', [], {}, 4);
       expect(m).to.be.deep.equal([
         { matchedLength: 0, rank: 0, params: {} }
       ]);
@@ -39,6 +46,18 @@ describe('utils/match()', function () {
       expect(m).to.be.deep.equal([
         { matchedLength: 3, rank: 1, params: {} }
       ]);
+    });
+
+    it('accepts "test/foo" starting from index 5', function () {
+      var m = match('test/foo', matchingTree, {}, 5);
+      expect(m).to.be.deep.equal([
+        { matchedLength: 3, rank: 1, params: {} }
+      ]);
+    });
+
+    it('rejects "test/foobar" starting from index 5', function () {
+      var m = match('test/foobar', matchingTree, {}, 5);
+      expect(m).to.be.deep.equal([]);
     });
   });
 
@@ -111,6 +130,30 @@ describe('utils/match()', function () {
     it('rejects "c"', function () {
       var m = match('c', matchingTree);
       expect(m).to.be.deep.equal([]);
+    });
+  });
+
+  describe('[:username/]log', function () {
+    var matchingTree = [
+      { o: [
+        { p: 'username' },
+        { s: '/' }
+      ]},
+      { s: 'log' }
+    ];
+
+    it('accepts "log"', function () {
+      var m = match('log', matchingTree);
+      expect(m).to.be.deep.equal([
+        { matchedLength: 3, rank: 1, params: {} }
+      ]);
+    });
+
+    it('accepts "jan.noha/log"', function () {
+      var m = match('jan.noha/log', matchingTree);
+      expect(m).to.be.deep.equal([
+        { matchedLength: 12, rank: 3, params: { username: 'jan.noha' } }
+      ]);
     });
   });
 });
