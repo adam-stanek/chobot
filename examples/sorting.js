@@ -40,7 +40,7 @@ describe('Sorting example', function () {
   });
 
   describe('URL construction', function () {
-    var router = new Router([route]);
+    var router = new Router(route);
 
     it('generates URL without specified sorting', function () {
       var url = router.createUrl('r2');

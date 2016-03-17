@@ -53,7 +53,7 @@ describe('Category example', function () {
   });
 
   describe('URL construction', function () {
-    var router = new Router([route]);
+    var router = new Router(route);
 
     it('generates URL for category #2', function () {
       var url = router.createUrl('r2', { categoryId: 2 });

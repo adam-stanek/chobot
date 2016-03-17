@@ -77,7 +77,7 @@ describe('Complex listing example', function () {
   });
 
   describe('URL construction', function () {
-    var router = new Router([route]);
+    var router = new Router(route);
 
     it('generates /products/green/super-vendor/by-brand/2/', function () {
       var url = router.createUrl('r6', {"categoryId":1,"brand":"super vendor","sorting":{"by":"brand","method":"asc"},"pageNum":2});

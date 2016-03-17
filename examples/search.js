@@ -29,7 +29,7 @@ describe('Search keywords example', function () {
   });
 
   describe('URL construction', function () {
-    var router = new Router([route]);
+    var router = new Router(route);
 
     it('generates URL without specified keywords', function () {
       var url = router.createUrl('r1');
