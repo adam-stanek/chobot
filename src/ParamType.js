@@ -31,10 +31,6 @@ class ParamType {
     this._escape = !!val;
   }
 
-  getEscapeEnabled() {
-    return this._escape || true;
-  }
-
   setDefaultValue(val) {
     this.defaultValue = val;
   }
