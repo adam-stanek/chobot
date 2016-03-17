@@ -22,7 +22,11 @@ function ensureRoute(Route, obj) {
         props[k] = obj.props[k];
     }
 
-    return new Route(props, obj.props.children || []);
+    var children = children ? (Array.isArray(obj.props.children)
+      ? obj.props.children
+      : [ obj.props.children ]) : [];
+
+    return new Route(props, children);
   }
 
   throw new Error('Received unexpected argument. Expected Route or ReactElement.');
