@@ -20,6 +20,13 @@ function matchRouteList(routes, location, index) {
   return false;
 }
 
+function assignDefaults(obj, paramTypes) {
+  for(var k in paramTypes) {
+    if(paramTypes[k].defaultValue !== undefined && obj[k] === undefined)
+      obj[k] = paramTypes[k].defaultValue;
+  }
+}
+
 /**
  * Matched route info.
  * @typedef {Object} MatchedRouteInfo
@@ -82,6 +89,7 @@ class Route {
     // If we are the index route
     if(this.path === '.') {
       if(location.pathname.length == index || (location.pathname.length == index + 1 && location.pathname[index] == '/')) {
+        assignDefaults(result.params, this.params);
         return result;
       } else {
         return false;
@@ -105,6 +113,7 @@ class Route {
           let childMatches = matchRouteList(this.children, location, m[i].matchedLength + index);
           if(childMatches) {
             Object.assign(result.params, m[i].params, childMatches.params);
+            assignDefaults(result.params, this.params);
             result.routes.push(...childMatches.routes);
             return result;
           }
@@ -114,8 +123,8 @@ class Route {
         else {
           // If we are at the end of the path and we are leaf route => END
           if(m[i].matchedLength + index === location.pathname.length) {
-
             Object.assign(result.params, m[i].params);
+            assignDefaults(result.params, this.params);
             return result;
           }
         }
