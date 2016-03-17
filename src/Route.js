@@ -131,7 +131,7 @@ class Route {
       }
     }
 
-    return result;
+    return false;
   }
 }
 
