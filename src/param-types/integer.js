@@ -19,9 +19,9 @@ function integerType(t) {
 module.exports = (SharedMethods) => createFluent(
   [integerType],
   Object.assign({}, SharedMethods, {
-    gt:  (t, min) => t.chainFilter((m) => m.value >  min ? m : null),
-    gte: (t, min) => t.chainFilter((m) => m.value >= min ? m : null),
-    lt:  (t, max) => t.chainFilter((m) => m.value <  max ? m : null),
-    lte: (t, max) => t.chainFilter((m) => m.value <= max ? m : null)
+    gt:  (t, min) => t.chainFilter((m) => m && m.value >  min ? m : null),
+    gte: (t, min) => t.chainFilter((m) => m && m.value >= min ? m : null),
+    lt:  (t, max) => t.chainFilter((m) => m && m.value <  max ? m : null),
+    lte: (t, max) => t.chainFilter((m) => m && m.value <= max ? m : null)
   })
 );
