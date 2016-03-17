@@ -3,11 +3,12 @@ const { createFluent } = require('@dobby/fluent');
 
 const INTEGER_RX = /-?[0-9]+/;
 function integerType(t) {
-  t.replaceFilter((str) => {
-    var m = INTEGER_RX.exec(str);
-    if(m && str.indexOf(m[0]) === 0) {
-      var value = parseInt(m[0]);
-      return { matchedString: m[0], value };
+  t.replaceFilter((m) => {
+    if(m && m.matchedString) {
+      let matches = INTEGER_RX.exec(m.matchedString);
+      if(matches && m.matchedString.indexOf(matches[0]) === 0) {
+        return { matchedString: matches[0], value: parseInt(matches[0]) };
+      }
     }
 
     return null;

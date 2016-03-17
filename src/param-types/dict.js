@@ -3,10 +3,13 @@ const { createFluent } = require('@dobby/fluent');
 const deepEqual = require('deep-equal');
 
 function dictType(t, dictionary) {
-  t.replaceFilter((str) => {
+  t.replaceFilter((input) => {
+    if(!input)
+      return null;
+
     var m;
     for(var k in dictionary) {
-      if(str.lastIndexOf(k, 0) === 0 && (!m || m.length < k.length))
+      if(input.value.lastIndexOf(k, 0) === 0 && (!m || m.length < k.length))
         m = k;
     }
 

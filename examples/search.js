@@ -31,7 +31,7 @@ describe('Search keywords example', function () {
   describe('URL construction', function () {
     var router = new Router([route]);
 
-    it.only('generates URL without specified keywords', function () {
+    it('generates URL without specified keywords', function () {
       var url = router.createUrl('r1');
       expect(url).to.be.equal('/search');
     });

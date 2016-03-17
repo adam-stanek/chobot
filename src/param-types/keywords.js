@@ -3,7 +3,7 @@ const { createFluent } = require('@dobby/fluent');
 const regExpFilter = require('../utils/regExpFilter.js');
 const { DEFAULT_FILTER } = require('../ParamType.js');
 
-function keywordsType(t, dictionary) {
+function keywordsType(t) {
   t.replaceFilter((str) => {
     var m = DEFAULT_FILTER(str);
     if(m) {

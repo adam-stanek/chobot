@@ -16,8 +16,12 @@ const DEFAULT_FORMATTER = (value) => {
 };
 
 class ParamType {
-  get filter() {
-    return this._filter || DEFAULT_FILTER;
+  constructor() {
+    this.filter = this.filter.bind(this);
+  }
+
+  filter(value) {
+    return (this._filter || DEFAULT_FILTER)({ matchedString: value, value });
   }
 
   get format() {
