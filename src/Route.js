@@ -66,9 +66,6 @@ class Route {
       this.params = {};
     }
 
-    // Are all matching rules optional?
-    this.isOptional = this.matchingTree && this.matchingTree.every((rule) => rule.o);
-
     if(props.path == '.' && children.length > 0)
       throw new Error('Index routes cannot have any children.');
   }
