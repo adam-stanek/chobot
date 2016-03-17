@@ -21,7 +21,18 @@ class ParamType {
   }
 
   get format() {
-    return this._formatter ? (value) => DEFAULT_FORMATTER(this._formatter(value)) : DEFAULT_FORMATTER;
+    if(this._escape === false)
+      return this._formatter ? this._formatter : (value) => value;
+    else
+      return this._formatter ? (value) => DEFAULT_FORMATTER(this._formatter(value)) : DEFAULT_FORMATTER;
+  }
+
+  setEscapeEnabled(val) {
+    this._escape = !!val;
+  }
+
+  getEscapeEnabled() {
+    return this._escape || true;
   }
 
   setDefaultValue(val) {
