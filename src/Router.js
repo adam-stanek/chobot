@@ -1,26 +1,29 @@
 'use strict';
-const Route = require('./Route.js');
 const constructFragmentForParams = require('./utils/constructFragmentForParams.js');
+const Route = require('./Route.js');
+const ensureRoute = require('./utils/ensureRoute.js');
 
 module.exports = class Router {
-  constructor(routes) {
-    this.rootRoute = new Route({}, routes);
+  constructor(route) {
+    this.rootRoute = ensureRoute(Route, route);
   }
 
   // Zero-copy generator
   *routeWalk() {
     var top;
-    var routeStack = [];
-    var indexStack = [];
+    var routeStack = [ this.rootRoute ];
+    var indexStack = [ 1 ];
+
+    yield routeStack;
 
     for(var i = 0; i < this.rootRoute.children.length; i++) {
       routeStack.push(this.rootRoute.children[i]);
       yield routeStack;
 
       indexStack.push(0);
-      top = 0;
+      top = 1;
 
-      while(top > -1) {
+      while(top > 0) {
         if(routeStack[top].children[indexStack[top]]) {
           routeStack.push(routeStack[top].children[indexStack[top]]);
           yield routeStack;
