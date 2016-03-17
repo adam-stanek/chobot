@@ -22,7 +22,7 @@ function ensureRoute(Route, obj) {
         props[k] = obj.props[k];
     }
 
-    var children = children ? (Array.isArray(obj.props.children)
+    var children = obj.props.children ? (Array.isArray(obj.props.children)
       ? obj.props.children
       : [ obj.props.children ]) : [];
 
