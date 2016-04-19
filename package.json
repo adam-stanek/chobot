@@ -1,6 +1,6 @@
 {
   "name": "@dobby/router",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "URL router for Dobby projects",
   "license": "UNLICENSED",
   "author": "V3Net.cz, s.r.o. <info@v3net.cz> (http://www.v3net.cz)",
