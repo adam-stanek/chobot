@@ -2,48 +2,11 @@
 const constructFragmentForParams = require('./utils/constructFragmentForParams.js');
 const Route = require('./Route.js');
 const ensureRoute = require('./utils/ensureRoute.js');
+const routeWalk = require('./utils/routeWalk.js');
 
 module.exports = class Router {
   constructor(route) {
     this.rootRoute = ensureRoute(Route, route);
-  }
-
-  // Zero-copy generator
-  *routeWalk() {
-    var top;
-    var routeStack = [ this.rootRoute ];
-    var indexStack = [ 1 ];
-
-    yield routeStack;
-
-    for(var i = 0; i < this.rootRoute.children.length; i++) {
-      routeStack.push(this.rootRoute.children[i]);
-      yield routeStack;
-
-      indexStack.push(0);
-      top = 1;
-
-      while(top > 0) {
-        if(routeStack[top].children[indexStack[top]]) {
-          routeStack.push(routeStack[top].children[indexStack[top]]);
-          yield routeStack;
-
-          if(routeStack[top].children[indexStack[top]].children.length > 0) {
-            indexStack.push(0);
-            indexStack[top]++;
-            top++;
-          } else {
-            routeStack.pop();
-            indexStack[top]++;
-          }
-
-        } else {
-          routeStack.pop();
-          indexStack.pop();
-          top--;
-        }
-      }
-    }
   }
 
   createPathFromRoutes(routes, params) {
@@ -89,7 +52,7 @@ module.exports = class Router {
   createUrl(name, params = {}, hash) {
     var bestMatch, match;
 
-    for(let routes of this.routeWalk()) {
+    for(let routes of routeWalk([this.rootRoute])) {
       if(routes[routes.length - 1].name == name) {
         try {
           match = this.createPathFromRoutes(routes, params);
