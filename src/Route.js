@@ -44,7 +44,7 @@ class Route {
    * @param  {object}  props    route properties
    * @param  {string}  [props.path] path fragment used for matching
    * @param  {string}  [props.name] route name used for creating links
-   * @param  {string}  [props.params] parameter types
+   * @param  {object}  [props.params] parameter types
    * @param  {Route[]} children child routes
    */
   constructor(props, children) {
