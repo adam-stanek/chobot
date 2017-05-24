@@ -9,11 +9,13 @@
     "deep-equal": "^1.0.1"
   },
   "devDependencies": {
+    "@dobby/babel-preset-es2015-browser": "^0.1.1",
     "@dobby/babel-register": "^0.1.0",
     "babel-core": "^6.7.2",
     "babel-plugin-transform-react-jsx": "^6.5.2",
     "chai": "^3.5.0",
-    "istanbul": "^1.0.0-alpha.2"
+    "istanbul": "^1.0.0-alpha.2",
+    "mocha": "^3.4.1"
   },
   "scripts": {
     "test": "mocha --harmony_rest_parameters --harmony_destructuring --harmony_default_parameters --recursive ./tests",
