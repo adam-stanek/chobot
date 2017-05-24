@@ -1,6 +1,6 @@
 declare interface RouteOptions {
   path?: string,
-  name?: string,
+  name?: string | number,
   params?: object,
   
   [k: string]: any
@@ -17,6 +17,11 @@ declare namespace DobbyRouter {
   }
 
   class Route {
+    name?: string | number
+    path?: string
+    params?: object
+    children: Route[]
+
     constructor(options: RouteOptions, children: Route[])
     match(location: Location, index: number): RouteMatch
 
@@ -33,7 +38,7 @@ declare namespace DobbyRouter {
   }
 
   function ensureRoute(obj: any): Route
-  function *routeWalk(rootRoute: Route)
+  function routeWalk(routeStack: Route[]): Iterable<Route[]>
 }
 
 export = DobbyRouter
