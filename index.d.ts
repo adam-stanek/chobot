@@ -11,6 +11,48 @@ declare interface Location {
 }
 
 declare namespace DobbyRouter {
+  interface FluentParamType {
+    __chain: any[]
+  }
+
+  interface BaseParamType<T> extends FluentParamType {
+    withDefault(defaultValue: any): T
+    noEscape(): T
+    excluding(filter: (value: any) => boolean | string[] | RegExp | any): T
+  }
+
+  interface IntegerParamType extends BaseParamType<IntegerParamType> {
+    gt(min: number): IntegerParamType
+    gte(min: number): IntegerParamType
+    lt(min: number): IntegerParamType
+    lte(min: number): IntegerParamType
+  }
+
+  interface StringParamType extends BaseParamType<StringParamType> {
+    rx(rx: RegExp): StringParamType
+  }
+
+  interface DictionaryParamType extends BaseParamType<KeywordsParamType> {
+
+  }
+
+  interface KeywordsParamType extends BaseParamType<KeywordsParamType> {
+
+  }
+
+  const ParamTypes: {
+    string: StringParamType
+    integer: IntegerParamType
+    dict: DictionaryParamType
+    keywords: KeywordsParamType
+  }
+
+  interface ParamSchema {
+    [k: string]: FluentParamType
+  }
+
+  // -------
+
   interface RouteMatch {
     params: object
     routes: Route[]
@@ -19,7 +61,7 @@ declare namespace DobbyRouter {
   class Route {
     name?: string | number
     path?: string
-    params?: object
+    params?: ParamSchema
     children: Route[]
 
     constructor(options: RouteOptions, children: Route[])
