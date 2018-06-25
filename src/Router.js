@@ -50,7 +50,7 @@ module.exports = class Router {
   }
 
   createUrl(name, params = {}, hash) {
-    var bestMatch, match;
+    var bestMatch, bestMatchRoutes, match;
 
     for(let routes of routeWalk([this.rootRoute])) {
       if(routes[routes.length - 1].name == name) {
@@ -58,6 +58,7 @@ module.exports = class Router {
           match = this.createPathFromRoutes(routes, params);
           if(match && (!bestMatch || bestMatch.matchedParams.length < match.matchedParams.length)) {
             bestMatch = match;
+            bestMatchRoutes = routes
           }
 
         // We need to ignore errors of missing parameters and rethrow anything else
@@ -73,9 +74,23 @@ module.exports = class Router {
 
     var url = bestMatch.pathname;
     var queryPairs = [];
+
     for(let k in params) {
       if(params[k] !== bestMatch.defaults[k] && bestMatch.matchedParams.indexOf(k) == -1) {
-        queryPairs.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+        var value = params[k]
+        for(var i = bestMatchRoutes.length - 1; i >= 0; i--) {
+          if(bestMatchRoutes[i].queryParams && bestMatchRoutes[i].queryParams[k]) {
+            value = bestMatchRoutes[i].queryParams[k].format(value)
+            break
+          }
+        }
+
+        var encodedKey = encodeURIComponent(k)
+        if(Array.isArray(value)) {
+          value.forEach(v => queryPairs.push(encodedKey + '%5B%5D=' + encodeURIComponent(v)))
+        } else {
+          queryPairs.push(encodedKey + '=' + encodeURIComponent(value))
+        }
       }
     }
 

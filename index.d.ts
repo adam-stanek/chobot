@@ -1,7 +1,8 @@
 declare interface RouteOptions {
-  path?: string,
-  name?: string | number,
-  params?: object,
+  path?: string
+  name?: string | number
+  params?: { [k: string]: any }
+  queryParams?: { [k: string]: any }
   
   [k: string]: any
 }

@@ -6,13 +6,13 @@ const ensureRoute = require('./utils/ensureRoute.js');
 const { composeChain } = require('@dobby/fluent');
 const { ParamType } = require('./ParamType.js');
 
-function matchRouteList(routes, location, index) {
-  if((index == 0 || location.pathname[index - 1] != '/') && location.pathname[index] == '/')
+function matchRouteList(routes, pathname, index) {
+  if((index == 0 || pathname[index - 1] != '/') && pathname[index] == '/')
     index++;
 
   var m;
   for(var i = 0; i < routes.length; i++) {
-    m = routes[i].match(location, index);
+    m = routes[i].matchPathname(pathname, index);
     if(m)
       return m;
   }
@@ -33,6 +33,8 @@ function assignDefaults(obj, paramTypes) {
  * @property {Object<string, mixed>} params dictionary of extracted parameters
  * @property {Array.<Route>} routes matched route sequence (from the root to the leaf)
  */
+
+const PARAM_KEYS = ['params', 'queryParams']
 
 /**
  * Route implementation.
@@ -57,28 +59,82 @@ class Route {
     if(props.path != '.')
       this.matchingTree = props.path == undefined || props.path == '' ? [] : parsePathExpression(props.path);
 
-    // TODO: add support for directly passed types
-    if(this.params) {
-      for(var k in this.params) {
-        if(!(this.params[k] instanceof ParamType))
-          this.params[k] = composeChain(new ParamType, this.params[k].__chain);
+    PARAM_KEYS.forEach(paramKey => {
+      if(this[paramKey]) {
+        this[paramKey] = Object.assign({}, this[paramKey])
+        for(var k in this[paramKey]) {
+          if(this[paramKey][k] && (typeof this[paramKey][k] === 'object' || typeof this[paramKey][k] === 'function') && this[paramKey][k].__chain) {
+            this[paramKey][k] = composeChain(new ParamType, this[paramKey][k].__chain);
+          }
+        }
+      } else {
+        this[paramKey] = {};
       }
-    } else {
-      this.params = {};
-    }
+    })
 
     if(props.path == '.' && children.length > 0)
       throw new Error('Index routes cannot have any children.');
   }
 
   /**
+  * Matches location against the route (and its children).
+  * @param  {object} location
+  * @param  {string} location.pathname URL path
+  * @param  {string} location.search URL search path (serialized query parameters starting with ?)
+  * @param  {number} index=0 starting index from which is the pathname being matched
+  * @return {MatchedRouteInfo|false} route match or false if route doesn't match the location
+  */
+  match(location, index = 0) {
+    var result = this.matchPathname(location.pathname, index = 0)
+    if(result && location.search) {
+      result.queryParams = location.search.substring(1).split('&').reduce(
+        (queryParams, pair) => {
+          var equalsIdx = pair.indexOf('=')
+          var k = decodeURIComponent(equalsIdx === -1 ? pair : pair.substr(0, equalsIdx))
+          var v = equalsIdx === -1 ? "" : decodeURIComponent(pair.substr(equalsIdx + 1))
+
+          if(k.endsWith('[]')) {
+            k = k.substr(0, k.length - 2)
+            if(!Array.isArray(queryParams[k])) {
+              queryParams[k] = [v]
+            } else {
+              queryParams[k].push(v)
+            }
+          } else {
+            queryParams[k] = v
+          }
+
+          return queryParams
+        },
+        {} /* as { [k: string]: string | string[] } */
+      )
+
+      // Apply param filters
+      for(var k in result.queryParams) {
+        for(var filterResult, i = result.routes.length - 1; i >= 0; i--) {
+          if(result.routes[i].queryParams && result.routes[i].queryParams[k]) {
+            filterResult = result.routes[i].queryParams[k].filter(result.queryParams[k])
+            if(filterResult) {
+              result.queryParams[k] = filterResult.value
+              break
+            } else {
+              return false
+            }
+          }
+        }
+      }
+    }
+
+    return result
+  }
+
+  /**
    * Matches location against the route (and its children).
-   * @param  {object} location
-   * @param  {string} location.pathname URL path
+   * @param  {string} pathname URL path
    * @param  {number} index=0 starting index from which is the pathname being matched
    * @return {MatchedRouteInfo|false} route match or false if route doesn't match the location
    */
-  match(location, index = 0) {
+  matchPathname(pathname, index = 0) {
     var result = {
       params: {},
       routes: [ this ]
@@ -86,7 +142,7 @@ class Route {
 
     // If we are the index route
     if(this.path === '.') {
-      if(location.pathname.length == index || (location.pathname.length == index + 1 && location.pathname[index] == '/')) {
+      if(pathname.length == index || (pathname.length == index + 1 && pathname[index] == '/')) {
         assignDefaults(result.params, this.params);
         return result;
       } else {
@@ -96,8 +152,8 @@ class Route {
 
     // Match against matching tree
     else {
-      let m = match(location.pathname, this.matchingTree, this.params, index);
-      // console.log('matching', location.pathname.substring(index), 'against', this.path, ' => ', m);
+      let m = match(pathname, this.matchingTree, this.params, index);
+      // console.log('matching', pathname.substring(index), 'against', this.path, ' => ', m);
 
       if(m.length == 0)
         return false;
@@ -108,7 +164,7 @@ class Route {
 
         // Process child routes
         if(this.children.length) {
-          let childMatches = matchRouteList(this.children, location, m[i].matchedLength + index);
+          let childMatches = matchRouteList(this.children, pathname, m[i].matchedLength + index);
           if(childMatches) {
             Object.assign(result.params, m[i].params, childMatches.params);
             assignDefaults(result.params, this.params);
@@ -120,7 +176,7 @@ class Route {
         // Leaf route
         else {
           // If we are at the end of the path and we are leaf route => END
-          if(m[i].matchedLength + index === location.pathname.length || (location.pathname.length == m[i].matchedLength + index + 1 && location.pathname[m[i].matchedLength + index] == '/')) {
+          if(m[i].matchedLength + index === pathname.length || (pathname.length == m[i].matchedLength + index + 1 && pathname[m[i].matchedLength + index] == '/')) {
             Object.assign(result.params, m[i].params);
             assignDefaults(result.params, this.params);
             return result;
