@@ -13,11 +13,9 @@
       ],
       "~/*": [
         "src/*"
-      ],
-      "~t/*": [
-        "test/*"
       ]
     },
+    "plugins": [{ "transform": "@zerollup/ts-transform-paths" }]
   },
   "include": [
     "src/**/*.ts",
