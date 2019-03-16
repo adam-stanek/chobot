@@ -5,21 +5,21 @@
   "license": "UNLICENSED",
   "author": "V3Net.cz, s.r.o. <info@v3net.cz> (http://www.v3net.cz)",
   "dependencies": {
-    "@dobby/fluent": "^0.1.0",
     "deep-equal": "^1.0.1"
   },
   "devDependencies": {
-    "@dobby/babel-preset-es2015-browser": "^0.1.1",
-    "@dobby/babel-register": "^0.1.0",
-    "babel-core": "^6.7.2",
-    "babel-plugin-transform-react-jsx": "^6.5.2",
-    "chai": "^3.5.0",
-    "istanbul": "^1.0.0-alpha.2",
-    "mocha": "^3.4.1"
+    "@types/deep-equal": "^1.0.1",
+    "@types/jest": "^24.0.11",
+    "jest": "^24.5.0",
+    "mocha": "^3.4.1",
+    "prettier": "^1.16.4",
+    "ts-jest": "^24.0.0",
+    "tslib": "^1.9.3",
+    "typescript": "^3.3.3333"
   },
   "scripts": {
-    "test": "mocha --recursive ./tests",
-    "examples": "mocha --require ./examples/_bootstrap.js ./examples || true",
-    "coverage": "node ./node_modules/istanbul/lib/cli.js cover _mocha -- --require ./examples/_bootstrap.js --recursive ./examples ./tests || true"
+    "format": "prettier --write \"{src,test}/**/*.ts\" .prettierrc \"*.js\"",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   }
 }

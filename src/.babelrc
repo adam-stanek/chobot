@@ -1,9 +1,0 @@
-{
-  "env": {
-    "browser": {
-      "presets": [
-        "@dobby/babel-preset-es2015-browser"
-      ]
-    }
-  }
-}
