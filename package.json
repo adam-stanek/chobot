@@ -1,9 +1,13 @@
 {
-  "name": "@dobby/router",
-  "version": "0.4.0",
-  "description": "URL router for Dobby projects",
-  "license": "UNLICENSED",
-  "author": "V3Net.cz, s.r.o. <info@v3net.cz> (http://www.v3net.cz)",
+  "name": "chobot",
+  "version": "1.0.0",
+  "description": "Universal URL router",
+  "author": "Adam Staněk <adam.stanek@v3net.cz>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/adam-stanek/chobot.git"
+  },
   "typings": "dist/dts/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -25,7 +29,7 @@
   "scripts": {
     "build:esm": "ttsc --declaration --declarationDir dist/dts --module es2015 --outDir dist/esm --project tsconfig.lib.json",
     "build:cjs": "ttsc --module commonjs --outDir dist/cjs --project tsconfig.lib.json",
-    "format": "prettier --write \"{src,test}/**/*.ts\" .prettierrc \"*.js\"",
+    "format": "prettier --write \"{src,test}/**/*.ts\" .prettierrc tsconfig.json tsconfig.lib.json \"*.{js,md}\"",
     "test": "jest",
     "test:coverage": "jest --coverage"
   }
