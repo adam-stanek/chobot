@@ -1,10 +1,10 @@
 import { BaseParamType } from './BaseParamType'
-import { ParamDescriptor } from './ParamDescriptor'
 import { defaultFormatter } from './defaultFormatter'
+import { ParamDescriptor } from './ParamDescriptor'
 
 type ParamDescriptors<TParamTypes extends { [k: string]: BaseParamType<any> }> = {
   [k in keyof TParamTypes]: ParamDescriptor<
-    TParamTypes[k] extends BaseParamType<infer PT> ? ParamDescriptor<PT> : never
+    TParamTypes[k] extends { withDefault(value: infer PT): any } ? PT : never
   >
 }
 

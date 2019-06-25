@@ -1,7 +1,10 @@
-import { strParamTypeFactory } from './StringParamType'
-import { intParamTypeFactory } from './IntegerParamType'
 import { dictParamTypeFactory } from './DictionaryParamType'
+import { intParamTypeFactory } from './IntegerParamType'
 import { keywordsParamTypeFactory } from './KeywordsParamType'
+import { pathParamTypeFactory } from './PathParamType'
+import { strParamTypeFactory } from './StringParamType'
+
+export { BaseParamType } from './BaseParamType'
 
 export const T = {
   get str() {
@@ -15,5 +18,8 @@ export const T = {
   },
   get keywords() {
     return keywordsParamTypeFactory
+  },
+  get path() {
+    return pathParamTypeFactory
   },
 }

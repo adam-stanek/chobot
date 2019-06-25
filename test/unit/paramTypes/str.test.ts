@@ -1,5 +1,5 @@
-import { buildParamDescriptors } from '~/paramTypes/buildParamDescriptors'
 import { T } from '~/paramTypes'
+import { buildParamDescriptors } from '~/paramTypes/buildParamDescriptors'
 
 describe('T.str()', () => {
   const { t } = buildParamDescriptors({ t: T.str() })
