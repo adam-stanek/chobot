@@ -70,7 +70,7 @@ export function parsePathExpression(expr: string) {
 
   if (stack.length !== 1) throw new Error(`Unmatched bracket in expression '${expr}'.`)
 
-  if (index < expr.length - 1) {
+  if (index <= expr.length - 1) {
     k = index > 0 && expr[index - 1] === ':' ? 'p' : 's'
     stack[0].o!.push({ [k]: expr.substring(index) })
   }
