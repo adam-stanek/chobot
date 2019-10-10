@@ -16,15 +16,14 @@
   },
   "devDependencies": {
     "@types/deep-equal": "^1.0.1",
-    "@types/jest": "^24.0.11",
-    "@zerollup/ts-transform-paths": "^1.7.0",
-    "jest": "^24.5.0",
-    "mocha": "^3.4.1",
-    "prettier": "^1.16.4",
-    "ts-jest": "^24.0.0",
-    "tslib": "^1.9.3",
-    "ttypescript": "^1.5.6",
-    "typescript": "^3.3.3333"
+    "@types/jest": "^24.0.18",
+    "@zerollup/ts-transform-paths": "^1.7.3",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.1.0",
+    "tslib": "^1.10.0",
+    "ttypescript": "^1.5.7",
+    "typescript": "^3.6.4"
   },
   "scripts": {
     "build:esm": "ttsc --declaration --declarationDir dist/dts --module es2015 --outDir dist/esm --project tsconfig.lib.json",
