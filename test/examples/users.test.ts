@@ -6,7 +6,7 @@ describe('Users example', function() {
     new Route({ path: '.', name: 'r2' }),
 
     // Form for creating new user.
-    // Note: username param should be bound by som RegExp so that there
+    // Note: username param should be bound by some RegExp so that there
     // will be no conflicts. We don't do that to demonstrate priority
     // of route matching.
     new Route({ path: 'new-user', name: 'r3' }),

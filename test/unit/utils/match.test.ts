@@ -104,7 +104,7 @@ describe('utils/match()', function() {
       expect(m).toEqual([{ matchedLength: 1, rank: 1, params: {} }])
     })
 
-    it('partialy accepts "a/c"', function() {
+    it('partially accepts "a/c"', function() {
       var m = match('a/c', matchingTree)
       expect(m).toEqual([{ matchedLength: 1, rank: 1, params: {} }])
     })
