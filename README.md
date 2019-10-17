@@ -91,13 +91,13 @@ For more advanced examples please take a look at
 
 ```bash
 # Build
-yarn build:esm
-yarn build:cjs
+lerna run build:esm
+lerna run build:cjs
 
 # Format
-yarn format
+lerna run format
 
 # Test
-yarn test
-yarn test:coverage
+lerna run test -- --color
+lerna run test:coverage -- --color
 ```

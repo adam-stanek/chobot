@@ -1,35 +1,21 @@
 {
-  "name": "chobot",
-  "version": "1.1.1",
-  "description": "Universal URL router",
-  "author": "Adam Staněk <adam.stanek@v3net.cz>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/adam-stanek/chobot.git"
-  },
-  "typings": "dist/dts/index.d.ts",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "dependencies": {
-    "deep-equal": "^1.0.1"
-  },
+  "name": "chobot-mono",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
-    "@types/deep-equal": "^1.0.1",
-    "@types/jest": "^24.0.18",
+    "@types/jest": "^24.0.19",
     "@zerollup/ts-transform-paths": "^1.7.3",
     "jest": "^24.9.0",
+    "lerna": "^3.18.1",
     "prettier": "^1.18.2",
     "ts-jest": "^24.1.0",
     "tslib": "^1.10.0",
-    "ttypescript": "^1.5.7",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "ttypescript": "^1.5.7"
   },
   "scripts": {
-    "build:esm": "ttsc --declaration --declarationDir dist/dts --module es2015 --outDir dist/esm --project tsconfig.lib.json",
-    "build:cjs": "ttsc --module commonjs --outDir dist/cjs --project tsconfig.lib.json",
-    "format": "prettier --write \"{src,test}/**/*.ts\" .prettierrc tsconfig.json tsconfig.lib.json \"*.{js,md}\"",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
+    "bootstrap": "lerna bootstrap"
   }
 }
