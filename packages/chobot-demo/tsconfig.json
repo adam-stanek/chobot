@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "sourceMap": true,
+    "rootDir": "src",
+    "baseUrl": "./",
+    "paths": {
+      "chobot": ["../chobot/src/index.ts"],
+    }
+  },
+  "references": [
+    { "path": "../chobot/tsconfig.lib.esm.json" },
+  ],
+  "files": [
+    "src/index.ts"
+  ]
+}

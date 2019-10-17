@@ -18,8 +18,8 @@
     "@types/deep-equal": "^1.0.1"
   },
   "scripts": {
-    "build:esm": "ttsc --declaration --declarationDir dist/dts --module es2015 --outDir dist/esm --project tsconfig.lib.json",
-    "build:cjs": "ttsc --module commonjs --outDir dist/cjs --project tsconfig.lib.json",
+    "build:esm": "ttsc --project tsconfig.lib.esm.json",
+    "build:cjs": "ttsc --project tsconfig.lib.cjs.json",
     "format": "prettier --write \"{src,test}/**/*.ts\" .prettierrc tsconfig.json tsconfig.lib.json \"*.{js,md}\"",
     "test": "jest",
     "test:coverage": "jest --coverage"
