@@ -1,4 +1,4 @@
-import { Route } from '~'
+import { Route } from 'chobot'
 
 describe('Booking example', function() {
   // Imagine booking system and multi-page booking form.

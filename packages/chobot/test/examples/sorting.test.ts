@@ -1,4 +1,4 @@
-import { Route, T, Router } from '~'
+import { Route, Router, T } from 'chobot'
 
 const enum SortingMethod {
   ASC = 'asc',

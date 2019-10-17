@@ -1,4 +1,4 @@
-import { T, Route, Router } from '~'
+import { Route, Router, T } from 'chobot'
 
 describe('Query parameters', function() {
   const route = new Route({ path: 'products', queryParams: { foo: T.int() }, name: 'r1' })

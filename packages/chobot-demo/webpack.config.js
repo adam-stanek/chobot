@@ -9,7 +9,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.mjs', '.js', '.json', '.jsx'],
     plugins: [
       // https://www.npmjs.com/package/tsconfig-paths-webpack-plugin
-      new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../chobot/tsconfig.json') }),
+      new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') }),
     ],
   },
   output: {

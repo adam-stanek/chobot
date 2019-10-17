@@ -1,4 +1,4 @@
-import { Route } from '~'
+import { Route } from 'chobot'
 
 describe('Users example', function() {
   var route = new Route({ path: 'users', name: 'r1' }, [

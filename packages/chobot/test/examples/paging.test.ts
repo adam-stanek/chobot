@@ -1,4 +1,4 @@
-import { Route, T, Router } from '~'
+import { Route, Router, T } from 'chobot'
 
 describe('Paging example', function() {
   const route = new Route(

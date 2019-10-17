@@ -1,4 +1,4 @@
-import { Route } from '~/Route'
+import { Route } from 'chobot/Route'
 
 // Zero-copy generator
 export function* routeWalk(routeStack: Route[]) {

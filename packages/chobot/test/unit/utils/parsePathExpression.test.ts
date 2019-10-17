@@ -1,4 +1,4 @@
-import { parsePathExpression } from '~/utils/parsePathExpression'
+import { parsePathExpression } from 'chobot/utils/parsePathExpression'
 
 describe('parsePathExpression', () => {
   it("parses 'a'", () => {

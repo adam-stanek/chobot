@@ -1,4 +1,4 @@
-import { match } from '~/utils/match'
+import { match } from 'chobot/utils/match'
 
 describe('utils/match()', function() {
   describe('empty pattern', function() {

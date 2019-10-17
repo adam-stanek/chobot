@@ -1,8 +1,8 @@
-import { MatchingNode } from './MatchingNode'
-import { ParamDescriptor } from '~/paramTypes/ParamDescriptor'
-import { isOptionalForParams } from './isOptionalForParams'
+import { defaultFormatter } from 'chobot/paramTypes/defaultFormatter'
+import { ParamDescriptor } from 'chobot/paramTypes/ParamDescriptor'
 import deepEqual from 'deep-equal'
-import { defaultFormatter } from '~/paramTypes/defaultFormatter'
+import { isOptionalForParams } from './isOptionalForParams'
+import { MatchingNode } from './MatchingNode'
 
 export interface ConstructedFragment {
   fragment: string

@@ -1,5 +1,5 @@
-import { routeWalk } from '~/utils/routeWalk'
-import { Route } from '~/Route'
+import { Route } from 'chobot/Route'
+import { routeWalk } from 'chobot/utils/routeWalk'
 
 describe('routeWalk()', function() {
   var r121 = new Route({ name: 'r121' }, [])

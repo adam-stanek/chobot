@@ -1,4 +1,4 @@
-import { isOptionalForParams } from '~/utils/isOptionalForParams'
+import { isOptionalForParams } from 'chobot/utils/isOptionalForParams'
 
 describe('utils/isOptionalForParams()', function() {
   describe('[/:param1[/:param2]]', function() {

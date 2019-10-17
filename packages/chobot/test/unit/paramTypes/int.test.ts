@@ -1,5 +1,5 @@
-import { buildParamDescriptors } from '~/paramTypes/buildParamDescriptors'
-import { T } from '~/paramTypes'
+import { T } from 'chobot/paramTypes'
+import { buildParamDescriptors } from 'chobot/paramTypes/buildParamDescriptors'
 
 describe('T.int()', () => {
   const { t } = buildParamDescriptors({ t: T.int() })

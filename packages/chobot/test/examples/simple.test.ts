@@ -1,5 +1,5 @@
-import { Route } from '~/Route'
-import { Router } from '~/Router'
+import { Route } from 'chobot/Route'
+import { Router } from 'chobot/Router'
 
 describe('Simple example', function() {
   var router = new Router(

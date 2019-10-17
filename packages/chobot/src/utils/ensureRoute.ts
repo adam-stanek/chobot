@@ -1,4 +1,4 @@
-import { Route, RouteProps } from '~/Route'
+import { Route, RouteProps } from 'chobot/Route'
 
 // We don't really want to require whole React just for type check.
 // This is how React itself determines ReactElement.
