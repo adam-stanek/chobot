@@ -9,7 +9,6 @@
     "importHelpers": true,
     "esModuleInterop": true,
     "paths": {
-      "chobot": ["src"],
       "chobot/*": ["src/*"]
     },
     "plugins": [{ "transform": "@zerollup/ts-transform-paths" }]
