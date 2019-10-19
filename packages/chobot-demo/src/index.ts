@@ -1,3 +1,4 @@
-import { Route } from 'chobot'
+import { router } from './router'
 
-console.log('Init', Route)
+// TODO
+console.log('Init', router)
