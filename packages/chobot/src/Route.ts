@@ -1,10 +1,10 @@
+import { BaseParamType } from './paramTypes/BaseParamType'
+import { buildParamDescriptors } from './paramTypes/buildParamDescriptors'
 import { ParamDescriptor } from './paramTypes/ParamDescriptor'
 import { ensureRoute } from './utils/ensureRoute'
-import { parsePathExpression } from './utils/parsePathExpression'
-import { buildParamDescriptors } from './paramTypes/buildParamDescriptors'
-import { BaseParamType } from './paramTypes/BaseParamType'
 import { match } from './utils/match'
 import { MatchingNode } from './utils/MatchingNode'
+import { parsePathExpression } from './utils/parsePathExpression'
 
 function matchRouteList(routes: Route[], pathname: string, index: number): PathnameMatch | false {
   if ((index == 0 || pathname[index - 1] != '/') && pathname[index] == '/') index++
@@ -45,6 +45,7 @@ export interface LocationMatch extends PathnameMatch {
  * Route implementation.
  */
 export class Route {
+  path?: string
   params: { [k: string]: ParamDescriptor }
   queryParams: { [k: string]: ParamDescriptor }
   children: Route[]
