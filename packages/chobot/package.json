@@ -22,6 +22,7 @@
     "build:cjs": "ttsc --project tsconfig.lib.cjs.json",
     "format": "prettier --write \"{src,test}/**/*.ts\" .prettierrc tsconfig.json tsconfig.lib.json \"*.{js,md}\"",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "prepare": "yarn test && yarn build:esm && yarn build:cjs"
   }
 }
