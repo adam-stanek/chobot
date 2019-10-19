@@ -19,32 +19,28 @@ describe('Complex listing example', function() {
     'by-brand-desc': { by: 'brand', method: DESC },
   }
 
-  const route = new Route({ path: 'products', name: 'r1' }, [
-    new Route(
-      {
+  const route = new Route({
+    path: 'products',
+    name: 'r1',
+    children: [
+      new Route({
         path: '[:categoryId]',
         params: { categoryId: T.dict(categorySlugDict).noEscape() },
         name: 'r2',
-      },
-      [
-        new Route(
-          {
+        children: [
+          new Route({
             path: '[:brand]',
             params: { brand: T.keywords().excluding(Object.keys(categorySlugDict)) },
             name: 'r3',
-          },
-          [
-            new Route(
-              {
+            children: [
+              new Route({
                 path: '[:sorting]',
                 params: {
                   sorting: T.dict(sortSlugDictionary).withDefault({ by: 'name', method: ASC }),
                 },
                 name: 'r4',
-              },
-              [
-                new Route(
-                  {
+                children: [
+                  new Route({
                     path: '[:pageNum]',
                     params: {
                       pageNum: T.int()
@@ -52,16 +48,16 @@ describe('Complex listing example', function() {
                         .withDefault(1),
                     },
                     name: 'r5',
-                  },
-                  [new Route({ path: '.', name: 'r6' })],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    ),
-  ])
+                    children: [new Route({ path: '.', name: 'r6' })],
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      }),
+    ],
+  })
 
   describe('URL matching', function() {
     function itMatches(url: string, params = {}) {

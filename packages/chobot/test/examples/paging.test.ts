@@ -1,18 +1,16 @@
 import { Route, Router, T } from 'chobot'
 
 describe('Paging example', function() {
-  const route = new Route(
-    {
-      path: 'items[/:pageNum]',
-      params: {
-        pageNum: T.int()
-          .gt(0)
-          .withDefault(1),
-      },
-      name: 'r1',
+  const route = new Route({
+    path: 'items[/:pageNum]',
+    params: {
+      pageNum: T.int()
+        .gt(0)
+        .withDefault(1),
     },
-    [new Route({ path: '.', name: 'r2' })],
-  )
+    name: 'r1',
+    children: [new Route({ path: '.', name: 'r2' })],
+  })
 
   describe('URL matching', function() {
     function itMatches(url: string, pageNum: number) {

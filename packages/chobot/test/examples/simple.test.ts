@@ -3,12 +3,10 @@ import { Router } from 'chobot/Router'
 
 describe('Simple example', function() {
   var router = new Router(
-    new Route(
-      {
-        name: 'r1',
-      },
-      [new Route({ path: '.', name: 'r2' }), new Route({ path: 'about', name: 'r3' })],
-    ),
+    new Route({
+      name: 'r1',
+      children: [new Route({ path: '.', name: 'r2' }), new Route({ path: 'about', name: 'r3' })],
+    }),
   )
 
   describe('URL matching', function() {

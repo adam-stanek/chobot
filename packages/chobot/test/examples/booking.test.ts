@@ -7,12 +7,16 @@ describe('Booking example', function() {
   //
   // This example shows how to make each page of booking form accessible for
   // times when it lives only in session and for when it is already saved.
-  var route = new Route({ path: 'booking[/:reservationId]', name: 'r1' }, [
-    // First page
-    new Route({ path: '.', name: 'r2' }),
-    // Customer form page
-    new Route({ path: 'customer', name: 'r3' }),
-  ])
+  var route = new Route({
+    path: 'booking[/:reservationId]',
+    name: 'r1',
+    children: [
+      // First page
+      new Route({ path: '.', name: 'r2' }),
+      // Customer form page
+      new Route({ path: 'customer', name: 'r3' }),
+    ],
+  })
 
   it('matches booking/', function() {
     var m = route.match({ pathname: 'booking/' })

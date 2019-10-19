@@ -18,16 +18,14 @@ describe('Sorting example', function() {
     'by-brand-desc': { by: 'brand', method: SortingMethod.DESC },
   }
 
-  var route = new Route(
-    {
-      path: 'products[/:sorting]',
-      params: {
-        sorting: T.dict(sortSlugDictionary).withDefault({ by: 'name', method: SortingMethod.ASC }),
-      },
-      name: 'r1',
+  var route = new Route({
+    path: 'products[/:sorting]',
+    params: {
+      sorting: T.dict(sortSlugDictionary).withDefault({ by: 'name', method: SortingMethod.ASC }),
     },
-    [new Route({ path: '.', name: 'r2' })],
-  )
+    name: 'r1',
+    children: [new Route({ path: '.', name: 'r2' })],
+  })
 
   describe('URL matching', function() {
     function itMatches(url: string, sorting: Sorting) {

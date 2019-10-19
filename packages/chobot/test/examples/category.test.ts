@@ -10,14 +10,12 @@ describe('Category example', function() {
     'red/square': 6,
   }
 
-  var route = new Route(
-    {
-      path: 'products[/:categoryId]',
-      name: 'r1',
-      params: { categoryId: T.dict(categorySlugDict).noEscape() },
-    },
-    [new Route({ path: '.', name: 'r2' })],
-  )
+  var route = new Route({
+    path: 'products[/:categoryId]',
+    name: 'r1',
+    params: { categoryId: T.dict(categorySlugDict).noEscape() },
+    children: [new Route({ path: '.', name: 'r2' })],
+  })
 
   describe('URL matching', function() {
     it('matches products', function() {
