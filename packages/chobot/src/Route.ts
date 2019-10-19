@@ -25,7 +25,7 @@ function assignDefaults(obj: { [k: string]: any }, paramTypes: { [k: string]: Pa
 }
 
 export interface RouteOptions {
-  name: string
+  name?: string
   path?: string
   params?: { [k: string]: BaseParamType<any> }
   queryParams?: { [k: string]: BaseParamType<any> }
@@ -45,7 +45,7 @@ export interface LocationMatch extends PathnameMatch {
  * Route implementation.
  */
 export class Route {
-  name: string
+  name?: string
   children: Route[]
 
   path?: string
