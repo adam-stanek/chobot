@@ -1,6 +1,6 @@
 {
   "name": "chobot",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Universal URL router",
   "author": "Adam Staněk <adam.stanek@v3net.cz>",
   "license": "MIT",
