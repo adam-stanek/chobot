@@ -1,7 +1,6 @@
 import { Route } from './Route'
-import { ensureRoute } from './utils/ensureRoute'
-import { routeWalk } from './utils/routeWalk'
 import { constructFragmentForParams } from './utils/constructFragmentForParams'
+import { routeWalk } from './utils/routeWalk'
 
 export interface ConstructedPath {
   pathname: string
@@ -13,7 +12,7 @@ export class Router {
   public rootRoute: Route
 
   constructor(route: any) {
-    this.rootRoute = ensureRoute(Route, route)
+    this.rootRoute = route
   }
 
   createPathFromRoutes(routes: Route[], params: { [k: string]: any }): ConstructedPath {

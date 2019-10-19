@@ -1,7 +1,6 @@
 import { BaseParamType } from './paramTypes/BaseParamType'
 import { buildParamDescriptors } from './paramTypes/buildParamDescriptors'
 import { ParamDescriptor } from './paramTypes/ParamDescriptor'
-import { ensureRoute } from './utils/ensureRoute'
 import { match } from './utils/match'
 import { MatchingNode } from './utils/MatchingNode'
 import { parsePathExpression } from './utils/parsePathExpression'
@@ -25,11 +24,12 @@ function assignDefaults(obj: { [k: string]: any }, paramTypes: { [k: string]: Pa
   }
 }
 
-export interface RouteProps {
+export interface RouteOptions {
+  name: string
   path?: string
   params?: { [k: string]: BaseParamType<any> }
   queryParams?: { [k: string]: BaseParamType<any> }
-  [k: string]: unknown
+  children?: Route[]
 }
 
 export interface PathnameMatch {
@@ -45,45 +45,37 @@ export interface LocationMatch extends PathnameMatch {
  * Route implementation.
  */
 export class Route {
+  name: string
+  children: Route[]
+
   path?: string
+  matchingTree?: MatchingNode[]
+
   params: { [k: string]: ParamDescriptor }
   queryParams: { [k: string]: ParamDescriptor }
-  children: Route[]
-  matchingTree?: MatchingNode[]
-  [k: string]: unknown
 
   /**
    * Constructor.
-   * @param  {object}  props    route properties
-   * @param  {string}  [props.path] path fragment used for matching
-   * @param  {string}  [props.name] route name used for creating links
-   * @param  {object}  [props.params] parameter types
-   * @param  {Route[]} children child routes
+   * @param  {object}  opts    route properties
+   * @param  {string}  [opts.path] path fragment used for matching
+   * @param  {string}  [opts.name] route name used for creating links
+   * @param  {object}  [opts.params] parameter types
+   * @param  {object}  [opts.queryParams] query parameter types
+   * @param  {Route[]} [opts.children] children child routes
    */
-  constructor(props: RouteProps, children: Route[] = []) {
-    for (var k in props) {
-      switch (k) {
-        case 'params':
-        case 'queryParams':
-          continue
-
-        default:
-          this[k] = props[k]
-      }
-    }
-
-    this.children = children.map(child => ensureRoute(Route, child))
+  constructor({ name, path, children = [], params, queryParams }: RouteOptions) {
+    this.name = name
+    this.path = path
+    this.children = children
+    this.params = params ? buildParamDescriptors(params) : {}
+    this.queryParams = queryParams ? buildParamDescriptors(queryParams) : {}
 
     // Parse 'path' expression into matching tree
-    if (props.path != '.') {
-      this.matchingTree =
-        props.path == undefined || props.path == '' ? [] : parsePathExpression(props.path)
+    if (path != '.') {
+      this.matchingTree = path == undefined || path == '' ? [] : parsePathExpression(path)
     }
 
-    this.params = props.params ? buildParamDescriptors(props.params) : {}
-    this.queryParams = props.queryParams ? buildParamDescriptors(props.queryParams) : {}
-
-    if (props.path == '.' && children.length > 0)
+    if (path == '.' && children.length > 0)
       throw new Error('Index routes cannot have any children.')
   }
 
@@ -96,7 +88,7 @@ export class Route {
    * @return {MatchedRouteInfo|false} route match or false if route doesn't match the location
    */
   match(location: { pathname: string; search?: string }, index = 0) {
-    var result = this.matchPathname(location.pathname, (index = 0)) as LocationMatch | false
+    var result = this.matchPathname(location.pathname, index) as LocationMatch | false
     if (result && location.search) {
       result.queryParams = location.search
         .substring(1)
