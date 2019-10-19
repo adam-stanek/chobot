@@ -4,7 +4,6 @@ import { Homepage } from './components/Homepage'
 
 export const router = new Router(
   new AppRoute({
-    name: 'Root',
     children: [
       new AppRoute({
         name: 'Homepage',
