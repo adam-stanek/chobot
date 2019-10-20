@@ -32,7 +32,7 @@ Library supports definition of parameter types. Each parameter can be defined wi
 
 Library comes with several param types bundled and you can easily define your own or just use plain
 old
-[regular expressions](https://github.com/adam-stanek/chobot/blob/master/test/unit/paramTypes/str.test.ts#L13).
+[regular expressions](https://github.com/adam-stanek/chobot/blob/master/packages/chobot/test/unit/paramTypes/str.test.ts#L13).
 
 **Optional segments**
 
@@ -85,7 +85,7 @@ router.createUrl('ArticleDetail', { id: 123 }) // Returns '/articles/123'
 ```
 
 For more advanced examples please take a look at
-[/test/examples](https://github.com/adam-stanek/chobot/tree/master/test/examples)
+[/test/examples](https://github.com/adam-stanek/chobot/tree/master/packages/chobot/test/examples)
 
 ## Development
 
