@@ -23,6 +23,7 @@ module.exports = {
         loader: 'ts-loader',
         options: {
           projectReferences: true,
+          getCustomTransformers: require.resolve('./webpack.tsTransformers'),
         },
       },
     ],
