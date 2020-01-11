@@ -1,4 +1,4 @@
-import { LocationMatch, Route } from 'chobot/Route'
+import { LocationMatch, Route } from '../Route'
 
 /**
  * Returns true if given routes can be considered as active for given match.

@@ -1,5 +1,5 @@
-import { defaultFilter } from 'chobot/paramTypes/defaultFilter'
-import { ParamDescriptor } from 'chobot/paramTypes/ParamDescriptor'
+import { defaultFilter } from '../paramTypes/defaultFilter'
+import { ParamDescriptor } from '../paramTypes/ParamDescriptor'
 import { MatchingNode } from './MatchingNode'
 
 export interface Match {
