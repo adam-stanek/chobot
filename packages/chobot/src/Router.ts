@@ -8,14 +8,14 @@ export interface ConstructedPath {
   defaults: { [k: string]: any }
 }
 
-export class Router {
-  public rootRoute: Route
+export class Router<TRoute extends Route> {
+  public rootRoute: TRoute
 
-  constructor(route: any) {
+  constructor(route: TRoute) {
     this.rootRoute = route
   }
 
-  createPathFromRoutes(routes: Route[], params: { [k: string]: any }): ConstructedPath {
+  createPathFromRoutes(routes: TRoute[], params: { [k: string]: any }): ConstructedPath {
     var fragment
 
     var result: ConstructedPath = {

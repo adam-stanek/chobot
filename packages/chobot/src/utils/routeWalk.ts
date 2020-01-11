@@ -1,7 +1,7 @@
 import { Route } from 'chobot/Route'
 
 // Zero-copy generator
-export function* routeWalk(routeStack: Route[]) {
+export function* routeWalk<TRoute extends Route>(routeStack: TRoute[]) {
   var top, route
   var fixedStackLength = routeStack.length
   var indexStack = [1]

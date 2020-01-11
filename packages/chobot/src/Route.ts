@@ -5,10 +5,14 @@ import { match } from './utils/match'
 import { MatchingNode } from './utils/MatchingNode'
 import { parsePathExpression } from './utils/parsePathExpression'
 
-function matchRouteList(routes: Route[], pathname: string, index: number): PathnameMatch | false {
+function matchRouteList<TRoute extends Route>(
+  routes: TRoute[],
+  pathname: string,
+  index: number,
+): PathnameMatch<TRoute> | false {
   if ((index == 0 || pathname[index - 1] != '/') && pathname[index] == '/') index++
 
-  let m: PathnameMatch | false
+  let m: PathnameMatch<TRoute> | false
   for (var i = 0; i < routes.length; i++) {
     m = routes[i].matchPathname(pathname, index)
     if (m) return m
@@ -24,20 +28,20 @@ function assignDefaults(obj: { [k: string]: any }, paramTypes: { [k: string]: Pa
   }
 }
 
-export interface RouteOptions {
+export interface RouteOptions<TRoute extends Route = Route> {
   name?: string
   path?: string
   params?: { [k: string]: BaseParamType<any> }
   queryParams?: { [k: string]: BaseParamType<any> }
-  children?: Route[]
+  children?: TRoute[]
 }
 
-export interface PathnameMatch {
+export interface PathnameMatch<TRoute extends Route = Route> {
   params: { [k: string]: any }
-  routes: Route[]
+  routes: TRoute[]
 }
 
-export interface LocationMatch extends PathnameMatch {
+export interface LocationMatch<TRoute extends Route = Route> extends PathnameMatch<TRoute> {
   queryParams: { [k: string]: any }
 }
 
@@ -46,7 +50,7 @@ export interface LocationMatch extends PathnameMatch {
  */
 export class Route {
   name?: string
-  children: Route[]
+  children: this[]
 
   path?: string
   matchingTree?: MatchingNode[]
@@ -63,10 +67,10 @@ export class Route {
    * @param  {object}  [opts.queryParams] query parameter types
    * @param  {Route[]} [opts.children] children child routes
    */
-  constructor({ name, path, children = [], params, queryParams }: RouteOptions) {
+  constructor({ name, path, children = [], params, queryParams }: RouteOptions<Route>) {
     this.name = name
     this.path = path
-    this.children = children
+    this.children = children as this[]
     this.params = params ? buildParamDescriptors(params) : {}
     this.queryParams = queryParams ? buildParamDescriptors(queryParams) : {}
 
@@ -88,7 +92,7 @@ export class Route {
    * @return {MatchedRouteInfo|false} route match or false if route doesn't match the location
    */
   match(location: { pathname: string; search?: string }, index = 0) {
-    var result = this.matchPathname(location.pathname, index) as LocationMatch | false
+    var result = this.matchPathname(location.pathname, index) as LocationMatch<this> | false
     if (result && location.search) {
       result.queryParams = location.search
         .substring(1)
@@ -140,8 +144,8 @@ export class Route {
    * @param  {number} index=0 starting index from which is the pathname being matched
    * @return {MatchedRouteInfo|false} route match or false if route doesn't match the location
    */
-  matchPathname(pathname: string, index = 0): PathnameMatch | false {
-    var result: PathnameMatch = {
+  matchPathname(pathname: string, index = 0): PathnameMatch<this> | false {
+    var result: PathnameMatch<this> = {
       params: {},
       routes: [this],
     }
