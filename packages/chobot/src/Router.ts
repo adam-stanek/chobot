@@ -8,7 +8,7 @@ export interface ConstructedPath {
   defaults: { [k: string]: any }
 }
 
-export class Router<TRoute extends Route> {
+export class Router<TRoute extends Route = Route> {
   public rootRoute: TRoute
 
   constructor(route: TRoute) {
