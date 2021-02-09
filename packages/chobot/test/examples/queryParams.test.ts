@@ -57,3 +57,27 @@ describe('Query parameters with arrays', function() {
     })
   })
 })
+
+describe('Query parameters with JSON', function () {
+  const route = new Route({ path: 'products', name: 'r1', queryParams: { foo: T.obj() } })
+
+  describe('URL matching', function () {
+    it('matches /products?foo=eyJhIjoiQUFBxasiLCJiIjp0cnVlfQ', function () {
+      const m = route.match({ pathname: 'products', search: '?foo=eyJhIjoiQUFBxasiLCJiIjp0cnVlfQ' })
+      if (m) {
+        expect(m.queryParams).toEqual({ foo: { a: 'AAA\u016B', b: true } })
+      } else {
+        fail('should match')
+      }
+    })
+  })
+
+  describe('URL construction', function () {
+    const router = new Router(route)
+
+    it('generates url with foo = { a: "AAA\\u016B", b: true }', function () {
+      const url = router.createUrl('r1', { foo: { a: 'AAA\u016B', b: true } })
+      expect(url).toBe('/products?foo=eyJhIjoiQUFBxasiLCJiIjp0cnVlfQ')
+    })
+  })
+})
