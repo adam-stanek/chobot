@@ -68,7 +68,7 @@ export class Router<TRoute extends Route = Route> {
             (!bestMatch || bestMatch.matchedParams.length < match.matchedParams.length)
           ) {
             bestMatch = match
-            bestMatchRoutes = routes
+            bestMatchRoutes = routes.slice()
           }
 
           // We need to ignore errors of missing parameters and rethrow anything else
