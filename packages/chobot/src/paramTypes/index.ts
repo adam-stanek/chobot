@@ -1,6 +1,7 @@
 import { dictParamTypeFactory } from './DictionaryParamType'
 import { intParamTypeFactory } from './IntegerParamType'
 import { keywordsParamTypeFactory } from './KeywordsParamType'
+import { objectParamTypeFactory } from './ObjectParamType'
 import { pathParamTypeFactory } from './PathParamType'
 import { strParamTypeFactory } from './StringParamType'
 
@@ -22,4 +23,7 @@ export const T = {
   get path() {
     return pathParamTypeFactory
   },
+  get obj() {
+    return objectParamTypeFactory
+  }
 }
