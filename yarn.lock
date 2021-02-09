@@ -1371,6 +1371,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@types/b2a@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/b2a/-/b2a-1.0.0.tgz#bce7abfdea846d289560fa0d247a1f37cf28df5a"
+  integrity sha512-Rp3I849AMkT8oiYPy5NW0VkJofhwxUcjUF10+a4kYJcf/cHcw8vd+pMc4v/4w11VMibIiVKzfNg/jpSZDOAVEA==
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.12.tgz#4d8e9e51eb265552a7e4f1ff2219ab6133bdfb2d"
@@ -2040,6 +2045,11 @@ aws4@^1.8.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
+
+b2a@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/b2a/-/b2a-1.1.2.tgz#3bb0a7dbc0931c84ac97722fa4f5f51ba0a7d831"
+  integrity sha512-Ee7SUAyWeIx4ICRygOi7dVlGpHRxynsaLIZwOtHtGKls3LhLchTRk5KrI0O8ioWqy94ikkE8Z2Li3LWNd027/A==
 
 babel-jest@^26.6.3:
   version "26.6.3"
