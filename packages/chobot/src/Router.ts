@@ -1,3 +1,4 @@
+import { ParamDescriptor } from './paramTypes/ParamDescriptor'
 import { Route } from './Route'
 import { constructFragmentForParams } from './utils/constructFragmentForParams'
 import { routeWalk } from './utils/routeWalk'
@@ -84,19 +85,23 @@ export class Router<TRoute extends Route = Route> {
 
     for (let k in params) {
       if (params[k] !== bestMatch.defaults[k] && bestMatch.matchedParams.indexOf(k) == -1) {
-        var value = params[k]
+        let paramDesc: ParamDescriptor<unknown> | undefined
         for (var i = bestMatchRoutes!.length - 1; i >= 0; i--) {
           if (bestMatchRoutes![i].queryParams && bestMatchRoutes![i].queryParams[k]) {
-            value = bestMatchRoutes![i].queryParams[k].format(value)
+            paramDesc = bestMatchRoutes![i].queryParams[k]
             break
           }
         }
 
-        var encodedKey = encodeURIComponent(k)
-        if (Array.isArray(value)) {
-          value.forEach(v => queryPairs.push(encodedKey + '%5B%5D=' + encodeURIComponent(v)))
-        } else {
-          queryPairs.push(encodedKey + '=' + encodeURIComponent(value))
+        if(params[k] !== paramDesc?.defaultValue) {
+          const value = paramDesc ? paramDesc.format(params[k]): params[k]
+        
+          var encodedKey = encodeURIComponent(k)
+          if (Array.isArray(value)) {
+            value.forEach(v => queryPairs.push(encodedKey + '%5B%5D=' + encodeURIComponent(v)))
+          } else {
+            queryPairs.push(encodedKey + '=' + encodeURIComponent(value))
+          }  
         }
       }
     }

@@ -93,42 +93,57 @@ export class Route {
    */
   match(location: { pathname: string; search?: string }, index = 0) {
     var result = this.matchPathname(location.pathname, index) as LocationMatch<this> | false
-    if (result && location.search) {
-      result.queryParams = location.search
-        .substring(1)
-        .split('&')
-        .reduce(
-          (queryParams, pair) => {
-            var equalsIdx = pair.indexOf('=')
-            let k = decodeURIComponent(equalsIdx === -1 ? pair : pair.substr(0, equalsIdx))
-            var v = equalsIdx === -1 ? '' : decodeURIComponent(pair.substr(equalsIdx + 1))
+    if (result) {
+      if(location.search) {
+        result.queryParams = location.search
+          .substring(1)
+          .split('&')
+          .reduce(
+            (queryParams, pair) => {
+              var equalsIdx = pair.indexOf('=')
+              let k = decodeURIComponent(equalsIdx === -1 ? pair : pair.substr(0, equalsIdx))
+              var v = equalsIdx === -1 ? '' : decodeURIComponent(pair.substr(equalsIdx + 1))
 
-            if (k.endsWith('[]')) {
-              k = k.substr(0, k.length - 2)
-              if (Array.isArray(queryParams[k])) {
-                ;(queryParams[k] as string[]).push(v)
+              if (k.endsWith('[]')) {
+                k = k.substr(0, k.length - 2)
+                if (Array.isArray(queryParams[k])) {
+                  ;(queryParams[k] as string[]).push(v)
+                } else {
+                  queryParams[k] = [v]
+                }
               } else {
-                queryParams[k] = [v]
+                queryParams[k] = v
               }
-            } else {
-              queryParams[k] = v
+
+              return queryParams
+            },
+            {} as { [k: string]: string | string[] },
+          )
+
+        // Apply param filters
+        for (var k in result.queryParams) {
+          for (var filterResult, i = result.routes.length - 1; i >= 0; i--) {
+            if (result.routes[i].queryParams && result.routes[i].queryParams[k]) {
+              filterResult = result.routes[i].queryParams[k].filter(result.queryParams[k])
+              if (filterResult) {
+                result.queryParams[k] = filterResult.value
+                break
+              } else {
+                return false
+              }
             }
+          }
+        }
+      } else {
+        result.queryParams = {}
+      }
 
-            return queryParams
-          },
-          {} as { [k: string]: string | string[] },
-        )
-
-      // Apply param filters
-      for (var k in result.queryParams) {
-        for (var filterResult, i = result.routes.length - 1; i >= 0; i--) {
-          if (result.routes[i].queryParams && result.routes[i].queryParams[k]) {
-            filterResult = result.routes[i].queryParams[k].filter(result.queryParams[k])
-            if (filterResult) {
-              result.queryParams[k] = filterResult.value
-              break
-            } else {
-              return false
+      // Apply query param defaults
+      for (let i = result.routes.length - 1; i >= 0; i--) {
+        if(result.routes[i].queryParams) {
+          for(const k in result.routes[i].queryParams) {
+            if(result.queryParams[k] === undefined && result.routes[i].queryParams[k].defaultValue !== undefined) {
+              result.queryParams[k] = result.routes[i].queryParams[k].defaultValue
             }
           }
         }
