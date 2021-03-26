@@ -25,4 +25,17 @@ describe('parsePathExpression', () => {
     const actual = parsePathExpression('foo/:id[/edit]')
     expect(actual).toEqual([{ s: 'foo/' }, { p: 'id' }, { o: [{ s: '/edit' }] }])
   })
+
+  it("parses nested optional segments 'foo/:id[/bar/:id[/baz]]'", () => {
+    const actual = parsePathExpression('foo/:id[/bar/:id[/baz]]')
+    expect(actual).toEqual([
+      { s: 'foo/' },
+      { p: 'id' },
+      { o: [{ s: '/bar/' }, { p: 'id' }, { o: [{ s: '/baz' }] }] },
+    ])
+  })
+
+  it("fails on  invalid path 'http://10.254.15.33:1337/'", () => {
+    expect(() => parsePathExpression('http://10.254.15.33:1337/')).toThrowError()
+  })
 })

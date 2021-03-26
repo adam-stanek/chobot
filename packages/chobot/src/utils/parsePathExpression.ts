@@ -21,11 +21,31 @@ function findParamEnd(str: string, index: number) {
   } else return str.search(RX_PARAM_END)
 }
 
+const RX_OPTIONAL_SEGMENT = /\[.*\]$/
+
+const RX_VALID_PATH = /^(\/?:?[a-zA-Z0-9]+)+((\[.*\])|\/)?$/
+
+export function isValidPathExpression(expression: string): boolean {
+  if (expression.match(RX_VALID_PATH)) {
+    const [optionalSegment] = expression.match(RX_OPTIONAL_SEGMENT) || []
+
+    if (optionalSegment) {
+      return isValidPathExpression(optionalSegment.slice(1, -1))
+    }
+
+    return true
+  }
+  return false
+}
+
 /**
  * Parse Route's path expression into matching tree.
  * @throws Will throw an error if expression contains unbalanced brackets.
  */
 export function parsePathExpression(expr: string) {
+  if (!isValidPathExpression(expr)) {
+    throw new Error('Invalid path expression')
+  }
   var k: ':' | 'p' | 's'
   var obj: MatchingNode = { o: [] }
   var stack = [obj]
