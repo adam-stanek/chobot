@@ -16,6 +16,9 @@ function findBracketOrParam(str: string, index: number) {
 const RX_PARAM_END = /[^a-zA-Z0-9]/
 function findParamEnd(str: string, index: number) {
   if (index >= 0) {
+    if (str[index].match(RX_PARAM_END)) {
+      throw new Error('Invalid parameter')
+    }
     var index2 = str.substring(index).search(RX_PARAM_END)
     return index2 >= 0 ? index + index2 : index2
   } else return str.search(RX_PARAM_END)

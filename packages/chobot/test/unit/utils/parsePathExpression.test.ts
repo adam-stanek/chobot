@@ -25,4 +25,8 @@ describe('parsePathExpression', () => {
     const actual = parsePathExpression('foo/:id[/edit]')
     expect(actual).toEqual([{ s: 'foo/' }, { p: 'id' }, { o: [{ s: '/edit' }] }])
   })
+
+  it("fails on  invalid parameter 'foo/:/id[/edit]'", () => {
+    expect(() => parsePathExpression('foo/:/id[/edit]')).toThrowError()
+  })
 })
